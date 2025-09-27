@@ -2,6 +2,7 @@ import { Router } from "express";
 import { UserController } from "@presentation/controllers/UserController";
 import { validateDTO } from "@presentation/controllers/middlewares/validateDTO";
 import { UserDTO } from "@presentation/dtos/UserDTO";
+import { authenticateJWT } from "@presentation/controllers/middlewares/authenticateJWT";
 
 
 const router = Router();
@@ -17,7 +18,7 @@ router.post("/users",validateDTO(UserDTO), async(req, res, next) => {
     }
 } );
 
-router.get("/users", async(req, res, next) =>{
+router.get("/users", authenticateJWT as any, async(req, res, next) =>{
     try {
         await userController.getAllUsers(req, res);
     } catch (error) {

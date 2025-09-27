@@ -1,6 +1,6 @@
 // DDD ==> Domain Driven Development
 
-import { IsEmail, IsNotEmpty, Length } from "class-validator";
+import { IsEmail, IsNotEmpty, IsOptional, Length } from "class-validator";
 
 export class UserDTO {
     @IsNotEmpty({message: "O nome é obrigatório."})
@@ -11,8 +11,16 @@ export class UserDTO {
     @IsNotEmpty({message: "O e-mail é um campo obrigatório."})
     email!: string;
 
-    constructor(_name: string, _email: string){
+    @IsOptional()
+    id?: string
+
+    @IsNotEmpty({message: "Senha é obrigatório"})
+    password!: string;
+
+    constructor(_name: string, _email: string, _password: string, _id?: string){
         this.name = _name;
         this.email = _email;
+        this.id = _id;
+        this.password = _password
     }
 }

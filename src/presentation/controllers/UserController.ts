@@ -16,8 +16,7 @@ export class UserController{
 
     async createUser(req: Request, res: Response) {
         try {
-            const { name, email } = req.body;
-            const user = await this.createUserUseCase.execute(name, email);
+            const user = await this.createUserUseCase.execute(req.body as UserDTO);
             
             return res.status(201).json(user);
         } catch (error) {
