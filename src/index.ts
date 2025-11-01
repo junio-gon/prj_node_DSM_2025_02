@@ -1,14 +1,23 @@
 import express from "express";
 import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express"
-import { Database } from "infrasctructure/config/Database";
+// import { Database } from "infrasctructure/config/Database";
+import { AppDataSource } from "infrasctructure/config/Database";
 import { swaggerSpec } from "@utils/swgger.config";
 
 dotenv.config();
 
 async function startApp() {
-    await Database.init();
-    console.log("Banco de dados inicializado com sucesso!");
+    // await Database.init();
+    // console.log("Banco de dados inicializado com sucesso!");
+
+    AppDataSource.initialize()
+        .then(() => {
+            console.log("Banco de dados inicializado com sucesso!");
+        })
+        .catch((err) => {
+            console.log("Não foi possível estabelecer conexão com o banco!", err);
+        })
 
     const app = express();
     app.use(express.json());

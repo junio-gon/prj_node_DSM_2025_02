@@ -1,30 +1,48 @@
-import mysql from "mysql2/promise";
+// import mysql from "mysql2/promise";
+// import dotenv from "dotenv";
+
+// dotenv.config();
+
+// export class Database {
+//     private static pool: mysql.Pool | null = null;
+
+//     public static async init() {
+//         if (!this.pool) {
+//             this.pool = mysql.createPool({
+//                 host: process.env.DB_HOST,
+//                 user: process.env.DB_USER,
+//                 password: process.env.DB_PASSWORD,
+//                 database: process.env.DB_NAME,
+//                 waitForConnections: true,
+//                 connectionLimit: 10,
+//                 queueLimit: 0
+//             })
+//         }
+//     }
+
+//     public static getConnection(){
+//         if (!this.pool) {
+//             throw new Error("Database pool não iniciado. Execute o init()");
+//         }
+
+//         return this.pool;   
+//     }
+// }
+
+import "reflect-metadata";
+import { DataSource } from "typeorm"
+import { User } from "@domain/entities/User"
 import dotenv from "dotenv";
 
 dotenv.config();
 
-export class Database {
-    private static pool: mysql.Pool | null = null;
-
-    public static async init() {
-        if (!this.pool) {
-            this.pool = mysql.createPool({
-                host: process.env.DB_HOST,
-                user: process.env.DB_USER,
-                password: process.env.DB_PASSWORD,
-                database: process.env.DB_NAME,
-                waitForConnections: true,
-                connectionLimit: 10,
-                queueLimit: 0
-            })
-        }
-    }
-
-    public static getConnection(){
-        if (!this.pool) {
-            throw new Error("Database pool não iniciado. Execute o init()");
-        }
-
-        return this.pool;   
-    }
-}
+export const AppDataSource = new DataSource({
+    type: "mysql",
+    host: process.env.DB_HOST,
+    port: Number(process.env.DBPORT),
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    entities: [User],
+    synchronize: true
+});
